@@ -12,11 +12,32 @@ console.log([0,1,2,3,4,5,6,7,8,9].forEach(show)+" forEach")
 console.log(newForEach([0,1,2,3,4,5,6,7,8,9],show)+" newForEach")
 
 
-const newFill = (array,valor,inicio = 0,fim = array.length) => {
-    for(inicio; inicio < fim;inicio++){
-        array[inicio] = valor
+function newFill(array, valor, inicio, fim){
+    result = []
+    for(let index = 0; index < inicio; index++){
+                result.push(array[index])
     }
-    return array
+
+    if(inicio === undefined){
+        inicio = 0
+    } 
+    if(fim === undefined){
+        fim = array.length
+    }
+
+    for(let index = inicio; index <= fim - 1; index++){
+        result.push(valor)
+    }
+
+    if(array.length === result.length){
+        fim = undefined
+    }
+    
+    for(let index = fim ; index < array.length; index++){
+        result.push(array[index])
+    }
+
+    return result
 }
 
 console.log([0,1,2,3,4,5,6,7,8,9].fill(4,2,6) + " fill")
@@ -52,14 +73,14 @@ console.log([0,1,2,3,4,5,6,7,8,9].some(validate) +  " some")
 console.log(newSome([0,1,2,3,4,5,6,7,8,9],validate) + " newSome")
 
 const callbackAchar = (element, value) => {
-    if (element > value) {
+    if (element >= value) {
       return element
     }
   }
-  const newFind = (array, callback, value) => {
+  const newFind = (array, callbackAchar, value) => {
     for (let i = 0; i < array.length; i++) {
       if (callbackAchar(array[i], value)) {
-        return array[i]-1;
+        return array[i];
       }
     }
   }
@@ -108,16 +129,22 @@ const newFilter = (array,callback) => {
 console.log([0,1,2,3,4,5,6,7,8,9].filter(isBigEnough))
 console.log(newFilter([0,1,2,3,4,5,6,7,8,9],isBigEnough))
 
-const newConcat = (array,...arguments) => {
-    for(let i =0;i<arguments.length;i++){
-        array.push(arguments[i])
+number = [0,1,2,3,1,4,2,5,6,7,8,4,9];
+array = ["laranja", "pera", "computador", "mouse"];
+
+const newConcat = (...arguments) =>{
+    let arrayConcat = [];
+    for(let i = 0; i<arguments.length; i++){
+        arrayConcat.push(...arguments[i])
     }
-    return array
+    return arrayConcat
 }
 
+let returnConcat = number.concat(array,number);
+let returnNewConcat = newConcat(number,array,number);
 
-console.log([0,1,2,3,4,5,6,7,8,9].concat(1,20) + " concat")
-console.log(newConcat([0,1,2,3,4,5,6,7,8,9],1,20) + " newConcat")
+console.log(returnConcat)
+console.log(returnNewConcat)
 
 const newIncludes = (array,searchElement , fromIndex = 0) => {
     for(let i = fromIndex; i<array.length;i++){
@@ -129,11 +156,26 @@ const newIncludes = (array,searchElement , fromIndex = 0) => {
 console.log([0,1,2,3,4,5,6,7,8,9].includes(3,1))
 console.log(newIncludes([0,1,2,3,4,5,6,7,8,9],3,1))
 
-const newIndexOf = (array,searchElement, fromIndex = 0) => {
-    for(let i = fromIndex;i<array.length;i++){
-        if(array[i] === searchElement) return i
+const newIndexOf = (array, element, start)=>{
+    let output = -1;
+
+    if(start === undefined){
+        for(let cont = 0; cont < array.length; cont++){
+            let item = array[cont];
+            if(item === element){
+                output =  cont;
+            }
+        }
     }
-    return -1
+
+    for(let cont = start; cont < array.length; cont++){
+        let item = array[cont];
+        if(item === element){
+            output =  cont;
+        }
+    }
+
+    return output;
 }
 
 console.log([0,1,2,3,4,5,6,7,8,9].indexOf(3,1) + " indexOf")
@@ -152,20 +194,18 @@ console.log([0,1,2,3,4,5,6,7,8,9].join() + " join")
 console.log(newJoin([0,1,2,3,4,5,6,7,8,9]) + " newJoin")
 
 
-const callbackReduzir = (array, index) => {
-    let acc = null
-    acc += array[index]
-    return acc
-  }
-  const newReduce = (array, callback) => {
-    let result = null
-    for (let i = 0; i < array.length; i++) {
-      result += callback(array, i)
+const callbackReduce = (total, n) =>{
+    return total + n
+}
+const newReduce = (arr, callback) =>{
+    let total = 0;
+    for(let i = 0; i<arr.length; i++){
+        total = callback(total, arr[i])
     }
-    return result
-  }
-
-console.log(newReduce([0,1,2,3,4,5,6,7,8,9],callbackReduzir) + " newReduce")
+    return total;
+}
+console.log([0,1,2,3,4,5,6,7,8,9].reduce(callbackReduce) + " Reduce")
+console.log(newReduce([0,1,2,3,4,5,6,7,8,9],callbackReduce) + " newReduce")
 
 const newSlice= (array,callback) => {
 }
