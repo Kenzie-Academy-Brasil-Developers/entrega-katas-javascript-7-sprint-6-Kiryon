@@ -12,9 +12,9 @@ console.log([0,1,2,3,4,5,6,7,8,9].forEach(show)+" forEach")
 console.log(newForEach([0,1,2,3,4,5,6,7,8,9],show)+" newForEach")
 
 
-const newFill = (array,valor,inicio = 0,fim = array.length-1) => {
-    for(let i = inicio; i < fim;i++){
-        array[i] = valor
+const newFill = (array,valor,inicio = 0,fim = array.length) => {
+    for(inicio; inicio < fim;inicio++){
+        array[inicio] = valor
     }
     return array
 }
@@ -51,20 +51,21 @@ const validate = (valor,indice,array) =>{
 console.log([0,1,2,3,4,5,6,7,8,9].some(validate) +  " some")
 console.log(newSome([0,1,2,3,4,5,6,7,8,9],validate) + " newSome")
 
-const newFind = (array,callback) => {
-    for(let i = 0;i<array.length;i++){
-        if(callback(array[i],i,array)) return i
+const callbackAchar = (element, value) => {
+    if (element > value) {
+      return element
     }
-    return undefined
-}
+  }
+  const newFind = (array, callback, value) => {
+    for (let i = 0; i < array.length; i++) {
+      if (callbackAchar(array[i], value)) {
+        return array[i]-1;
+      }
+    }
+  }
 
-const validate2 = (valor,indice,array) =>{
-    if(valor === array[indice]) return true
-    return false
-}
-
-console.log([0,1,2,3,4,5,6,7,8,9].find(validate2) + " find")
-console.log(newFind([0,1,2,3,4,5,6,7,8,9],validate2) + " newFind")
+console.log(([0,1,2,3,4,5,6,7,8,9].find(callbackAchar),3) + " find")
+console.log(newFind([0,1,2,3,4,5,6,7,8,9],callbackAchar, 3) + " newFind")
 
 
 const newFindIndex= (array,callback) => {
@@ -151,48 +152,23 @@ console.log([0,1,2,3,4,5,6,7,8,9].join() + " join")
 console.log(newJoin([0,1,2,3,4,5,6,7,8,9]) + " newJoin")
 
 
-const newReduce = (array,callback, valorInicial = 0) => {
-    let result = valorInicial
-    for(let i = 0;i<array.length;i++){
-        result = callback(result, array[i],i,array)
+const callbackReduzir = (array, index) => {
+    let acc = null
+    acc += array[index]
+    return acc
+  }
+  const newReduce = (array, callback) => {
+    let result = null
+    for (let i = 0; i < array.length; i++) {
+      result += callback(array, i)
     }
     return result
+  }
+
+console.log(newReduce([0,1,2,3,4,5,6,7,8,9],callbackReduzir) + " newReduce")
+
+const newSlice= (array,callback) => {
 }
-
-const reducer = (acumulador, valorAtual,index,array) =>{
-    return acumulador += valorAtual
-}
-
-console.log([0,1,2,3,4,5,6,7,8,9].reduce(reducer,5) + " reduce")
-console.log(newReduce([0,1,2,3,4,5,6,7,8,9],reducer,5) + " newReduce")
-
-const newSlice= (array,inicio = 0,fim = array.length) => {
-    let result = []
-    if(inicio >= 0){
-        for(let i = inicio; i < inicio + fim -1; i++){
-            result.push(array[i])
-        }
-        return result
-    }
-    if(inicio < 0 && fim === 0){
-        return []
-    }
-    if(inicio < 0 && fim < 0){
-        for(let i = array.length + inicio;i<array.length + fim;i++){
-            result.push(array[i])
-        }
-        return result
-    }
-    if(inicio < 0){
-        for(let i = array.length + inicio;i<array.length;i++){
-            result.push(array[i])
-        }
-        return result
-    }
-}
-
-console.log([0,1,2,3,4,5,6,7,8,9].slice(-5) + " slice")
-console.log(newSlice([0,1,2,3,4,5,6,7,8,9],-5) + " newSlice")
 
 const newFlat = (array,callback) => {
     
